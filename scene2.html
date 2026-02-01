@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Scene 2 - Question Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Itim:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Itim', sans-serif;
+        }
+
+        body {
+            background: white;
+        }
+
+        .mobile-frame {
+            width: 390px;
+            aspect-ratio: 1 / 2;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            background: white;
+        }
+
+
+        .section {
+            position: absolute;
+            inset: 0;
+            padding: 20px;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .section.active {
+            display: flex;
+        }
+
+        .question-box {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 14px;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .answer-btn {
+            background: white;
+            border: none;
+            border-radius: 14px;
+            padding: 12px 0;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .answer-btn:hover {
+            background: #252525;
+            color: white;
+        }
+
+        /* ปุ่มบน */
+        .top-btns {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.6);
+            color: #000;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .icon-btn:hover {
+            background: #252525;
+            color: white;
+        }
+
+        .bg-scene2-1 {
+            background-image: url("pic/scene2-1.png");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bg-scene2-7 {
+            background-image: url("pic/scene2-7.png");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bg-scene2-9 {
+            background-image: url("pic/scene2-9.png");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bg-scene2-12 {
+            background-image: url("pic/scene2-12.png");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bg-scene2-14 {
+            background-image: url("pic/scene2-14.png");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bg-scene2-15 {
+            background-image: url("pic/scene2-15.png");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bg-scene2-16 {
+            background-image: url("pic/scene2-16.png");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .q3-title {
+            color: #8B3E1F;
+            font-weight: 500;
+        }
+
+        .q3-btn {
+            background: white;
+            color: #8B3E1F;
+            border-radius: 20px;
+            padding: 12px 0;
+            font-size: 15px;
+        }
+
+        .q3-btn:hover {
+            background: #8B3E1F;
+            color: white;
+        }
+
+        .q3-layout {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .animal-btn {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border: none;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .animal-btn:hover {
+            transform: scale(1.1);
+            background: #d9d9d9;
+        }
+
+        .animal-btn img {
+            width: 70px;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-frame {
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+                aspect-ratio: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="d-flex justify-content-center align-items-center min-vh-100">
+        <div class="mobile-frame">
+
+            <div class="top-btns" id="navBtns" style="display:none;">
+                <button class="icon-btn" onclick="goBack()">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button class="icon-btn" onclick="restart()">
+                    <i class="fa-solid fa-rotate-left"></i>
+                </button>
+            </div>
+
+            <!-- SECTION 1 -->
+            <div class="section active bg-scene2-1" id="section1">
+                <button class="icon-btn" style="position:absolute; top:12px; left:12px; z-index:20;"
+                    onclick="location.href='index.html'">
+                    <i class="fa-solid fa-rotate-left"></i>
+                </button>
+
+                <div class="question-box">คาบเรียนต่อไปเป็นวิชาที่คุณชอบที่สุด</div>
+
+                <button class="answer-btn" onclick="chooseQ1('bio')">ชีววิทยา</button>
+                <button class="answer-btn" onclick="chooseQ1('math')">คณิตศาสตร์</button>
+                <button class="answer-btn" onclick="chooseQ1('thai')">ภาษาไทย</button>
+                <button class="answer-btn" onclick="chooseQ1('art')">ศิลปะ</button>
+            </div>
+
+
+            <!-- SECTION 2 -->
+            <div class="section" id="section2">
+                <audio id="bgm2" src="sound/school-Bell.mp3"></audio>
+                <img id="scene2Slide" src="pic/scene2-2.png"
+                    style="width:100%; height:100%; object-fit:cover; position:absolute; inset:0;">
+                <button class="btn btn-dark"
+                    style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%);"
+                    onclick="nextScene2Image()">ไปต่อ</button>
+            </div>
+
+            <!-- SECTION 3 -->
+            <div class="section bg-scene2-1" id="section3">
+                <div class="question-box">เล่นกิจกรรมกับเพื่อน ๆ ที่คาบว่างนี้ดีไหม</div>
+                <button class="answer-btn" onclick="chooseQ2('sport')">เล่นกีฬา</button>
+                <button class="answer-btn" onclick="chooseQ2('sleep')">นอน</button>
+                <button class="answer-btn" onclick="chooseQ2('library')">ไปห้องสมุด</button>
+                <button class="answer-btn" onclick="chooseQ2('art')">วาดรูป</button>
+            </div>
+
+            <!-- SECTION 4 -->
+            <div class="section" id="section4">
+                <img id="scene4Image" src="pic/scene2-5.png"
+                    style="width:100%; height:100%; object-fit:cover; position:absolute; inset:0;">
+                <button class="btn btn-dark"
+                    style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%);"
+                    onclick="showSection(5)">ไปต่อ</button>
+            </div>
+
+            <!-- SECTION 5 -->
+            <div class="section bg-scene2-7" id="section5">
+                <div class="question-box">สุดท้ายแล้วคุณจะเลือกที่จะ</div>
+                <button class="answer-btn" onclick="goToQ3()">ไปห้องสมุด</button>
+                <button class="answer-btn" onclick="chooseQ2FinalArt()">วาดรูป</button>
+            </div>
+
+            <!-- SECTION 6 -->
+            <div class="section" id="section6">
+                <div id="q3-story">
+                    <img src="pic/scene2-8.png"
+                        style="width:100%; height:100%; object-fit:cover; position:absolute; inset:0;">
+                    <button class="btn btn-dark"
+                        style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%);"
+                        onclick="showQ3()">
+                        ไปต่อ
+                    </button>
+                </div>
+
+                <div id="q3-question" class="bg-scene2-9 q3-layout"
+                    style="display:none; position:absolute; inset:0; padding:20px;">
+                    <div class="question-box">คุณเลือกอ่านหนังสือเรื่อง</div>
+                    <button class="answer-btn" onclick="chooseQ3('animal')">ร่างกายสัตว์</button>
+                    <button class="answer-btn" onclick="chooseQ3('invention')">สิ่งประดิษฐ์</button>
+                    <button class="answer-btn" onclick="chooseQ3('business')">ธุรกิจ</button>
+                    <button class="answer-btn" onclick="chooseQ3('plant')">ปลูกผัก</button>
+                    <button class="answer-btn" onclick="chooseQ3('teach')">เทคนิคสอน</button>
+                    <button class="answer-btn" onclick="chooseQ3('history')">ประวัติศาสตร์</button>
+                    <button class="answer-btn" onclick="chooseQ3('artthai')">วาดรูปไทย</button>
+                </div>
+            </div>
+
+            <!-- SECTION 7 -->
+            <div class="section" id="section7">
+                <div id="q4-story">
+                    <img src="pic/scene2-10.png"
+                        style="width:100%; height:100%; object-fit:cover; position:absolute; inset:0;">
+
+                    <button class="btn btn-dark"
+                        style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%);"
+                        onclick="showQ4()">
+                        ไปต่อ
+                    </button>
+                </div>
+
+                <div id="q4-question" class="q3-layout bg-scene2-1"
+                    style="display:none; position:absolute; inset:0; padding:20px;">
+                    <button class="answer-btn" onclick="chooseQ4('zombie')">มหันตภัยไวรัสซอมบี้</button>
+                    <button class="answer-btn" onclick="chooseQ4('space')">ซ่อมยาน save ดาว</button>
+                    <button class="answer-btn" onclick="chooseQ4('farmer')">มหาศึกชาวไร่</button>
+                    <button class="answer-btn" onclick="chooseQ4('heart')">คำพูดจากดวงใจ</button>
+                    <button class="answer-btn" onclick="chooseQ4('mansion')">คืนหฤหรรษ์ในคฤหาสน์</button>
+                </div>
+            </div>
+
+            <!-- SECTION 8 -->
+            <div class="section" id="section8">
+                <div id="q5-story">
+                    <img src="pic/scene2-11.png"
+                        style="width:100%; height:100%; object-fit:cover; position:absolute; inset:0;">
+
+                    <button class="btn btn-dark"
+                        style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%);"
+                        onclick="showQ5()">
+                        ไปต่อ
+                    </button>
+                </div>
+
+                <div id="q5-question" class="q3-layout bg-scene2-12"
+                    style="display:none; position:absolute; inset:0; padding:20px;">
+
+                    <div class="question-box">
+                        เมื่อกลับถึงบ้าน คุณจะทำอะไรต่อ
+                    </div>
+
+                    <button class="answer-btn" onclick="chooseQ5('science')">อ่านหนังสือการ์ตูนวิทยาศาสตร์</button>
+                    <button class="answer-btn" onclick="chooseQ5('money')">จดบันทึกรายรับรายจ่าย</button>
+                    <button class="answer-btn" onclick="chooseQ5('plant')">รดน้ำต้นไม้</button>
+                    <button class="answer-btn" onclick="chooseQ5('teach')">สอนการบ้านให้น้อง</button>
+                    <button class="answer-btn" onclick="chooseQ5('podcast')">ฟังพอดแคสต์</button>
+                    <button class="answer-btn" onclick="chooseQ5('art')">วาดรูปเล่น</button>
+                </div>
+            </div>
+
+            <!-- SECTION 9 : Q6 -->
+            <div class="section" id="section9">
+                <div id="q6-question" class="q3-layout bg-scene2-12" style="position:absolute; inset:0; padding:20px;">
+                    <div class="question-box">
+                        พรุ่งนี้เป็นวันหยุดสุดสัปดาห์ ซึ่งคุณว่างพอดี<br>
+                        คุณจะทำอะไรในวันพรุ่งนี้ดี
+                    </div>
+                    <button class="answer-btn" onclick="chooseQ6('hospital')">ทำจิตอาสาที่โรงพยาบาล</button>
+                    <button class="answer-btn"
+                        onclick="chooseQ6('invent')">ชมนิทรรศการเกี่ยวกับสิ่งประดิษฐ์ใหม่ๆ</button>
+                    <button class="answer-btn"
+                        onclick="chooseQ6('money')">ทำแพลนเนอร์วางแผนการใช้เงินและto-dolist</button>
+                    <button class="answer-btn" onclick="chooseQ6('flower')">ไปเดินตลาดดอกไม้และเลือกดูต้นไม้</button>
+                    <button class="answer-btn" onclick="chooseQ6('library')">จิตอาสาที่ห้องสมุด วาดภาพกับเด็ก</button>
+                    <button class="answer-btn" onclick="chooseQ6('museum')">ไปพิพิธภัณฑ์ที่สนใจ</button>
+                    <button class="answer-btn" onclick="chooseQ6('gallery')">ไปหอศิลป์หรือแกลอรีศิลปะ</button>
+                </div>
+            </div>
+
+            <!-- SECTION 10 -->
+            <div class="section" id="section10">
+                <img src="pic/scene2-13.png"
+                    style="width:100%; height:100%; object-fit:cover; position:absolute; inset:0;">
+
+                <button class="btn btn-dark"
+                    style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%);"
+                    onclick="goNextFrom10()">
+                    ไปต่อ
+                </button>
+            </div>
+
+            <!-- SECTION 11 : Q7 -->
+            <div class="section" id="section11">
+                <div id="q7-question" class="q3-layout bg-scene2-14" style="position:absolute; inset:0; padding:20px;">
+                    <div class="question-box">
+                        คุณจะเลือก workshop อะไรจากตัวเลือกมากมายดังต่อไปนี้
+                    </div>
+                    <button class="answer-btn"
+                        onclick="chooseQ7('animal')">การผ่าเพื่อดูการทำงานของอวัยวะภายในสัตว์</button>
+                    <button class="answer-btn" onclick="chooseQ7('robot')">เขียนโค้ดหุ่นยนต์</button>
+                    <button class="answer-btn" onclick="chooseQ7('finance')">สนามเรียนรู้ด้านการเงินและหุ้น</button>
+                    <button class="answer-btn" onclick="chooseQ7('plant')">การเพาะพันธุ์พืชและจัดดอกไม้</button>
+                    <button class="answer-btn" onclick="chooseQ7('speech')">ฝึกการพูดในที่สาธารณะและบุคลิกภาพ</button>
+                    <button class="answer-btn" onclick="chooseQ7('baking')">ทำขนม</button>
+                    <button class="answer-btn" onclick="chooseQ7('sing')">เทคนิคการร้องเพลงและบริหารลมหายใจ</button>
+                </div>
+            </div>
+
+            <!-- SECTION 12 : Q8 -->
+            <div class="section" id="section12">
+                <div id="q8-question" class="q3-layout bg-scene2-15" style="position:absolute; inset:0; padding:20px;">
+                    <div class="question-box">
+                        พรุ่งนี้เป็นวันจันทร์ ใคร ๆ ก็ไม่ชอบวันจันทร์กันทั้งนั้น<br>
+                        แต่วิชาแรกคือวิชาที่คุณไม่ชอบ นั่นคือวิชา
+                    </div>
+                    <button class="answer-btn" onclick="chooseQ8('bio')">ชีววิทยา</button>
+                    <button class="answer-btn" onclick="chooseQ8('physics')">ฟิสิกส์</button>
+                    <button class="answer-btn" onclick="chooseQ8('math')">คณิตศาสตร์</button>
+                    <button class="answer-btn" onclick="chooseQ8('eng')">ภาษาอังกฤษ</button>
+                    <button class="answer-btn" onclick="chooseQ8('dance')">นาฏศิลป์</button>
+                </div>
+            </div>
+
+            <!-- SECTION 13 : Q9 -->
+            <div class="section" id="section13">
+                <div id="q9-question" class="q3-layout bg-scene2-16" style="position:absolute; inset:0; padding:20px;">
+                    <div class="question-box">
+                        คุณจะรู้สึกมีความสุขมากเมื่อ
+                    </div>
+
+                    <button class="answer-btn" onclick="chooseQ9('experiment')">ได้เห็นผลการทดลองออกมาตามที่คาด</button>
+                    <button class="answer-btn" onclick="chooseQ9('language')">ได้เรียนภาษาและวัฒนธรรมใหม่ ๆ</button>
+                    <button class="answer-btn"
+                        onclick="chooseQ9('teach')">คนที่เข้าใจอะไรยากเข้าใจในสิ่งที่คุณอธิบาย</button>
+                    <button class="answer-btn"
+                        onclick="chooseQ9('marketing')">ได้วางแผนกลยุทธ์ทางการตลาดแบบใหม่</button>
+                    <button class="answer-btn" onclick="chooseQ9('tree')">ได้เห็นต้นไม้ที่ปลูกเติบโตงอกงาม</button>
+                    <button class="answer-btn" onclick="chooseQ9('spotlight')">ได้เฉิดฉายท่ามกลางแสงไฟ</button>
+                    <button class="answer-btn" onclick="chooseQ9('art')">ได้สร้างสรรค์ผลงานศิลปะหรือดนตรี</button>
+                    <button class="answer-btn" onclick="chooseQ9('heal')">ได้ช่วยเหลือคนให้หายจากอาการเจ็บป่วย</button>
+                </div>
+            </div>
+
+            <!-- SECTION 14 : Q10 -->
+            <div class="section bg-scene2-16" id="section14">
+
+                <div class="q3-layout" style="align-items:center;">
+
+                    <div class="question-box">
+                        สุดท้ายนี้คุณคิดว่าสัตว์ตัวไหนแทนตัวคุณมากที่สุด
+                    </div>
+
+                    <div id="tieChoices" style="display:grid;
+                    grid-template-columns:repeat(2,120px);
+                    gap:20px;
+                    justify-content:center;">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- SECTION 15 : FINAL RESULT -->
+            <div class="section" id="section15">
+
+                <img id="resultImg" style="width:100%; height:100%; object-fit:cover; position:absolute; inset:0;">
+
+                <button class="btn btn-dark"
+                    style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%);" onclick="restart()">
+                    เริ่มใหม่อีกครั้ง
+                </button>
+
+            </div>
+
+
+
+        </div>
+        <script>
+            let finalGroup = null;
+
+            /* ====== SCORE SYSTEM ====== */
+            const score = { วส: 0, วก: 0, บ: 0, กษ: 0, ศษ: 0, มภส: 0, ศ: 0 };
+
+            function addScore(arr) {
+                arr.forEach(f => score[f]++);
+                console.log("➕ ADD", arr, "=>", JSON.parse(JSON.stringify(score)));
+            }
+
+            function removeScore(arr) {
+                arr.forEach(f => score[f]--);
+                console.log("➖ REMOVE", arr, "=>", JSON.parse(JSON.stringify(score)));
+            }
+
+            /* ====== ANSWER MEMORY ====== */
+            const answers = {
+                q1: null,
+                q2: null,
+                q2final: null,
+                q3: null,
+                q4: null,
+                q5: null,
+                q6: null,
+                q7: null,
+                q8: null,
+                q9: null,
+            };
+
+            /* ====== SCORE MAP ====== */
+            const scoreMap = {
+                q1: {
+                    bio: ["วส", "กษ"],
+                    math: ["วก", "บ"],
+                    thai: ["ศษ", "มภส"],
+                    art: ["ศ"]
+                },
+                q2final: {
+                    art: ["ศ"]
+                },
+                q3: {
+                    animal: ["วส"],
+                    invention: ["วก"],
+                    business: ["บ"],
+                    plant: ["กษ"],
+                    teach: ["ศษ"],
+                    history: ["มภส"],
+                    artthai: ["ศ"]
+                },
+                q4: {
+                    zombie: ["วส"],
+                    space: ["วก", "บ"],
+                    farmer: ["กษ"],
+                    heart: ["ศษ", "มภส", "ศ"],
+                    mansion: ["วก"]
+                },
+                q5: {
+                    science: ["วส", "วก"],
+                    money: ["บ"],
+                    plant: ["กษ"],
+                    teach: ["ศษ"],
+                    podcast: ["มภส"],
+                    art: ["ศ"]
+                },
+                q6: {
+                    hospital: ["วส"],
+                    invent: ["วก"],
+                    money: ["บ"],
+                    flower: ["กษ"],
+                    library: ["ศษ"],
+                    museum: ["มภส"],
+                    gallery: ["ศ"]
+                },
+                q7: {
+                    animal: ["วส"],
+                    robot: ["วก"],
+                    finance: ["บ"],
+                    plant: ["กษ"],
+                    speech: ["มภส"],
+                    baking: ["วก", "บ"],
+                    sing: ["ศ"]
+                },
+                q8: {
+                    bio: ["วส", "กษ"],
+                    physics: ["วก"],
+                    math: ["บ"],
+                    eng: ["ศษ", "มภส"],
+                    dance: ["ศ"]
+                },
+                q9: {
+                    experiment: ["วก"],
+                    language: ["มภส"],
+                    teach: ["ศษ"],
+                    marketing: ["บ"],
+                    tree: ["กษ"],
+                    spotlight: ["ศ"],
+                    art: ["ศ"],
+                    heal: ["วส"]
+                },
+            };
+
+            const animalMap = {
+                วส: { img: "pic/icon/1.png", key: "วส" }, // งู
+                วก: { img: "pic/icon/2.png", key: "วก" }, // บีเวอร์
+                บ: { img: "pic/icon/3.png", key: "บ" },  // สิงโต
+                ศษ: { img: "pic/icon/4.png", key: "ศษ" }, // นกฮูก
+                มภส: { img: "pic/icon/5.png", key: "มภส" }, // กวาง
+                ศ: { img: "pic/icon/6.png", key: "ศ" }   // นกยูง
+            };
+
+            const resultMap = {
+                "วส": "health",
+                "วก": "physical",
+                "บ": "business",
+                "กษ": "agriculture",
+                "ศษ": "education",
+                "มภส": "social",
+                "ศ": "arts"
+            };
+
+            /* ====== NAV ====== */
+            let currentSection = 1;
+            const sectionHistory = [];
+
+            function showSection(n) {
+                if (currentSection !== null) {
+                    sectionHistory.push(currentSection);
+                }
+
+                document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+                document.getElementById("section" + n).classList.add("active");
+
+                currentSection = n;
+                document.getElementById("navBtns").style.display = n === 1 ? "none" : "flex";
+            }
+
+            function goBack() {
+                if (sectionHistory.length === 0) return;
+
+                const prev = sectionHistory.pop();
+
+                document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+                document.getElementById("section" + prev).classList.add("active");
+
+                currentSection = prev;
+                document.getElementById("navBtns").style.display = prev === 1 ? "none" : "flex";
+            }
+
+
+            /* ====== Q1 ====== */
+            function chooseQ1(a) {
+                if (answers.q1) removeScore(scoreMap.q1[answers.q1]);
+                answers.q1 = a;
+                addScore(scoreMap.q1[a]);
+                showSection(2);
+                document.getElementById("bgm2").play();
+            }
+
+            /* ====== STORY ====== */
+            const imgs = ["pic/scene2-2.png", "pic/scene2-3.png", "pic/scene2-4.png"];
+            let i = 0;
+            function nextScene2Image() {
+                i++;
+                if (i < imgs.length) scene2Slide.src = imgs[i];
+                else { i = 0; showSection(3); }
+            }
+
+            function playClick() {
+                const s = document.getElementById("clickSound");
+                s.currentTime = 0;
+                s.play();
+            }
+
+            /* ====== Q2 ====== */
+            function chooseQ2(c) {
+                answers.q2 = c;
+                if (c === "sport") { scene4Image.src = "pic/scene2-5.png"; showSection(4); }
+                else if (c === "sleep") { scene4Image.src = "pic/scene2-6.png"; showSection(4); }
+                else if (c === "library") { showSection(6); }
+                else if (c === "art") { chooseQ2FinalArt(); showSection(7); }
+            }
+
+            function chooseQ2FinalArt() {
+                if (answers.q2final) {
+                    removeScore(scoreMap.q2final.art);
+                }
+
+                answers.q2final = "art";
+                addScore(scoreMap.q2final.art);
+
+                console.log(score);
+                showSection(7)
+            }
+
+            function goToQ3() {
+                document.getElementById("q3-story").style.display = "block";
+                document.getElementById("q3-question").style.display = "none";
+
+                showSection(6);
+            }
+
+            /* ====== Q3 ====== */
+            function showQ3() {
+                document.getElementById("q3-story").style.display = "none";
+                document.getElementById("q3-question").style.display = "flex";
+            }
+
+            function chooseQ3(a) {
+                if (answers.q3) removeScore(scoreMap.q3[answers.q3]);
+                answers.q3 = a;
+                addScore(scoreMap.q3[a]);
+                console.log("SCORE:", score);
+                showSection(7);
+            }
+
+            /* ====== Q4 ====== */
+            function showQ4() {
+                document.getElementById("q4-story").style.display = "none";
+                document.getElementById("q4-question").style.display = "flex";
+            }
+
+            function chooseQ4(a) {
+                if (answers.q4) {
+                    removeScore(scoreMap.q4[answers.q4]);
+                }
+                answers.q4 = a;
+                addScore(scoreMap.q4[a]);
+                console.log("SCORE:", score);
+                showSection(8);
+            }
+
+
+            /* ====== Q5 ====== */
+            function showQ5() {
+                document.getElementById("q5-story").style.display = "none";
+                document.getElementById("q5-question").style.display = "flex";
+            }
+
+            function chooseQ5(a) {
+                if (answers.q5) {
+                    removeScore(scoreMap.q5[answers.q5]);
+                }
+                answers.q5 = a;
+                addScore(scoreMap.q5[a]);
+                console.log("SCORE:", score);
+                showSection(9);
+            }
+
+            /* ====== Q6 ====== */
+            function chooseQ6(a) {
+
+                if (answers.q6) {
+                    removeScore(scoreMap.q6[answers.q6]);
+                }
+
+                answers.q6 = a;
+                addScore(scoreMap.q6[a]);
+
+                console.log("SCORE:", score);
+
+                showSection(10);
+            }
+
+            /* ====== Q7 ====== */
+            function goNextFrom10() {
+                showSection(11);
+            }
+
+            function chooseQ7(a) {
+
+                if (answers.q7) {
+                    removeScore(scoreMap.q7[answers.q7]);
+                }
+
+                answers.q7 = a;
+                addScore(scoreMap.q7[a]);
+
+                console.log("SCORE:", score);
+
+                showSection(12);
+            }
+
+            /* ====== Q8 ====== */
+            function chooseQ8(a) {
+
+                if (answers.q8) {
+                    addScore(scoreMap.q8[answers.q8]);
+                }
+
+                answers.q8 = a;
+
+                removeScore(scoreMap.q8[a]);
+
+                console.log("SCORE:", score);
+
+                showSection(13);
+            }
+
+            /* ====== Q9 ====== */
+            function chooseQ9(a) {
+
+                if (answers.q9) {
+                    removeScore(scoreMap.q9[answers.q9]);
+                }
+
+                answers.q9 = a;
+                addScore(scoreMap.q9[a]);
+
+                console.log("SCORE:", score);
+
+                calculateResult();
+            }
+
+            /* ====== Q10 ====== */
+            function showTieBreaker(tiedGroups) {
+
+                const box = document.getElementById("tieChoices");
+                box.innerHTML = "";
+
+                tiedGroups.forEach(g => {
+                    const btn = document.createElement("button");
+                    btn.className = "animal-btn";
+
+                    btn.innerHTML = `<img src="${animalMap[g].img}">`;
+
+                    btn.onclick = () => {
+                        score[g]++;
+                        showResult();
+                    };
+
+                    box.appendChild(btn);
+                });
+
+                showSection(14);
+            }
+
+            function calculateResult() {
+
+                const max = Math.max(...Object.values(score));
+
+                const top = Object.keys(score)
+                    .filter(k => score[k] === max);
+
+                if (top.length === 1) {
+                    showResult();
+                } else {
+                    showTieBreaker(top);
+                }
+            }
+
+            function showResult() {
+
+                const maxScore = Math.max(...Object.values(score));
+
+                finalGroup = Object.keys(score)
+                    .find(k => score[k] === maxScore);
+
+                document.getElementById("resultImg").src =
+                    "pic/result-" + resultMap[finalGroup] + ".png";
+
+                showSection(15);
+            }
+
+            function restart() { location.href = "index.html"; }
+        </script>
+</body>
+
+
+</html>
