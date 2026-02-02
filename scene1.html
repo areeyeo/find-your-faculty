@@ -18,7 +18,6 @@
             background: white;
         }
 
-        /* กรอบจอมือถือ (เหมือนหน้า Home) */
         .mobile-frame {
             width: 390px;
             aspect-ratio: 1 / 2;
@@ -28,12 +27,10 @@
             position: relative;
         }
 
-        /* รูปในซีน */
         .mobile-frame img {
             object-fit: cover;
         }
 
-        /* ปุ่มถัดไป (ขวาล่าง) */
         .next-btn {
             position: absolute;
             right: 12px;
@@ -56,7 +53,6 @@
             color: #ffffff;
         }
 
-        /* ปุ่มเริ่มใหม่ (ซ้ายบน) */
         .restart-btn {
             position: absolute;
             left: 12px;
@@ -79,7 +75,7 @@
             color: #ffffff;
         }
 
-        /* Responsive มือถือ */
+        
         @media (max-width: 768px) {
             .mobile-frame {
                 width: 100vw;
@@ -95,15 +91,12 @@
     <div class="d-flex justify-content-center align-items-center min-vh-100">
         <div class="mobile-frame">
 
-            <!-- ปุ่มเริ่มใหม่ -->
             <button class="restart-btn" onclick="playSound(); restart()">
                 <i class="fa-solid fa-rotate-left"></i>
             </button>
 
-            <!-- รูป -->
             <img id="slide" src="pic/scene1-1.png">
 
-            <!-- ปุ่มถัดไป -->
             <button class="next-btn" onclick="playSound(); nextImage()">
                 <i class="fa-solid fa-chevron-right"></i>
             </button>
